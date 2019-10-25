@@ -1,4 +1,5 @@
 /* Copyright (c) 2018-2019, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2019 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -863,7 +864,10 @@ static int fg_gen4_get_prop_real_capacity(struct fg_dev *fg, int *val)
 {
 	return fg_get_msoc(fg, val);
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1bf45d16a1a1... drivers: power: Import Xiaomi changes
 static int fg_gen4_get_prop_capacity_raw(struct fg_gen4_chip *chip, int *val)
 {
 	struct fg_dev *fg = &chip->fg;
