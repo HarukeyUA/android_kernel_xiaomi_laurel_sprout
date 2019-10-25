@@ -1,4 +1,5 @@
 /* Copyright (c) 2011-2019, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2019 XiaoMi, Inc. 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -55,7 +56,7 @@
 #define MSM_CSID_DRV_NAME                    "msm_csid"
 
 #define DBG_CSID                             0
-#define SHORT_PKT_CAPTURE                    0
+#define SHORT_PKT_CAPTURE                    1
 #define SHORT_PKT_OFFSET                     0x200
 #define ENABLE_3P_BIT                        1
 #define SOF_DEBUG_ENABLE                     1

@@ -1,4 +1,5 @@
 /* Copyright (c) 2013-2019, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2019 XiaoMi, Inc. 
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -1915,6 +1916,9 @@ static int msm_isp_process_iommu_page_fault(struct vfe_device *vfe_dev)
 			&vfe_dev->common_data->common_dev_data_lock, irq_flags);
 		pr_err("%s:%d] VFE%d Handle Page fault! vfe_dev %pK\n",
 			__func__, __LINE__,  vfe_dev->pdev->id, vfe_dev);
+		trace_printk("%s: dumping WM config for vfe %d\n", __func__, vfe_dev->pdev->id);
+		msm_camera_io_dump(vfe_dev->vfe_base + 0xA0, 0x100, 1);
+		
 		vfe_dev->hw_info->vfe_ops.axi_ops.halt(vfe_dev, 0);
 		msm_isp_halt_send_error(vfe_dev, ISP_EVENT_IOMMU_P_FAULT);
 	}

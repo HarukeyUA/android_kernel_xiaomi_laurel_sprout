@@ -1,4 +1,5 @@
 /* Copyright (c) 2014-2019, The Linux Foundation. All rights reserved.
+ * Copyright (C) 2019 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -125,6 +126,7 @@ struct cam_iommu_cb_set {
 	struct work_struct smmu_work;
 	struct mutex payload_list_lock;
 	struct list_head payload_list;
+	u32 non_fatal_fault;
 };
 
 static const struct of_device_id msm_cam_smmu_dt_match[] = {
@@ -380,7 +382,7 @@ static int cam_smmu_iommu_fault_handler(struct iommu_domain *domain,
 		pr_err("Error: token is NULL\n");
 		pr_err("Error: domain = %pK, device = %pK\n", domain, dev);
 		pr_err("iova = %lX, flags = %d\n", iova, flags);
-		return 0;
+		return -EPERM;
 	}
 
 	cb_name = (char *)token;
@@ -393,12 +395,12 @@ static int cam_smmu_iommu_fault_handler(struct iommu_domain *domain,
 	if (idx < 0 || idx >= iommu_cb_set.cb_num) {
 		pr_err("Error: index is not valid, index = %d, token = %s\n",
 			idx, cb_name);
-		return 0;
+		return -EPERM;
 	}
 
 	payload = kzalloc(sizeof(struct cam_smmu_work_payload), GFP_ATOMIC);
 	if (!payload)
-		return 0;
+		return -EPERM;
 
 	payload->domain = domain;
 	payload->dev = dev;
@@ -423,9 +425,9 @@ static int cam_smmu_iommu_fault_handler(struct iommu_domain *domain,
 	list_add_tail(&payload->list, &iommu_cb_set.payload_list);
 	mutex_unlock(&iommu_cb_set.payload_list_lock);
 
-	schedule_work(&iommu_cb_set.smmu_work);
+	cam_smmu_page_fault_work(&iommu_cb_set.smmu_work);
 
-	return 0;
+	return -EPERM;
 }
 
 static int cam_smmu_translate_dir_to_iommu_dir(
@@ -2089,6 +2091,14 @@ static int cam_smmu_setup_cb(struct cam_context_bank_info *cb,
 		rc = -ENODEV;
 		goto end;
 	}
+	iommu_cb_set.non_fatal_fault = 1;
+
+	 pr_err("%s: setting the DOMAIN_ATTR_NON_FATAL_FAULTS cb: %s\n",__func__, cb->name);
+	 if (iommu_domain_set_attr(cb->mapping->domain,
+	 DOMAIN_ATTR_NON_FATAL_FAULTS,
+	 &iommu_cb_set.non_fatal_fault) < 0) {
+	 pr_err("%s:Error: failed to set DOMAIN_ATTR_NON_FATAL_FAULTS\n", __func__);
+	 }
 
 	return 0;
 end:
