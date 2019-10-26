@@ -158,6 +158,11 @@ ifdef CONFIG_SND_SOC_WCD_IRQ
 	CORE_OBJS += wcd-irq.o
 endif
 
+# for MAX98937 Codec
+ifdef CONFIG_SND_SOC_MAX98937
+	MAX98937_OBJS += max98937.o
+endif
+
 LINUX_INC +=	-Iinclude/linux
 
 INCS +=		$(COMMON_INC) \
