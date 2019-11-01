@@ -1,5 +1,4 @@
 /* Copyright (c) 2011-2018, The Linux Foundation. All rights reserved.
- * Copyright (C) 2019 XiaoMi, Inc.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -451,23 +450,6 @@ module_param(max_restarts, int, 0644);
 
 static long max_history_time = 3600;
 module_param(max_history_time, long, 0644);
-
-#ifdef  WT_COMPILE_FACTORY_VERSION
-static int adsp_crash_num;
-module_param(adsp_crash_num, int, 0644);
-
-static int modem_crash_num;
-module_param(modem_crash_num, int, 0644);
-
-static int venus_crash_num;
-module_param(venus_crash_num, int, 0644);
-
-static int a610_zap_crash_num;
-module_param(a610_zap_crash_num, int, 0644);
-
-static int cdsp_crash_num;
-module_param(cdsp_crash_num, int, 0644);
-#endif
 
 static void do_epoch_check(struct subsys_device *dev)
 {
@@ -1276,19 +1258,6 @@ int subsystem_restart_dev(struct subsys_device *dev)
 		return -EBUSY;
 	}
 
-#ifdef  WT_COMPILE_FACTORY_VERSION
-	if (!strcmp(name, "adsp"))
-		adsp_crash_num++;
-	if (!strcmp(name, "modem"))
-		modem_crash_num++;
-	if (!strcmp(name, "venus"))
-		venus_crash_num++;
-	if (!strcmp(name, "a610_zap"))
-		a610_zap_crash_num++;
-	if (!strcmp(name, "cdsp"))
-		cdsp_crash_num++;
-#endif
-
 	pr_info("Restart sequence requested for %s, restart_level = %s.\n",
 		name, restart_levels[dev->restart_level]);
 
@@ -1850,12 +1819,6 @@ struct subsys_device *subsys_register(struct subsys_desc *desc)
 	subsys->desc->state = NULL;
 	strlcpy(subsys->desc->fw_name, desc->name,
 			sizeof(subsys->desc->fw_name));
-
-#if defined(WT_FINAL_RELEASE) || defined(WT_COMPILE_FACTORY_VERSION)
-	subsys->restart_level = RESET_SUBSYS_COUPLED;
-#else
-	subsys->restart_level = RESET_SOC;
-#endif
 
 	subsys->notify = subsys_notif_add_subsys(desc->name);
 	subsys->early_notify = subsys_get_early_notif_info(desc->name);

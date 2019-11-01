@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2017 Linaro Ltd.
- * Copyright (C) 2019 XiaoMi, Inc.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -503,7 +502,6 @@ static void qmi_handle_message(struct qmi_handle *qmi,
 			mutex_unlock(&qmi->txn_lock);
 			return;
 		}
-		mutex_lock(&txn->lock);
 		if (txn->dest && txn->ei) {
 			ret = qmi_decode_message(buf, len, txn->ei, txn->dest);
 			if (ret < 0)
@@ -514,7 +512,6 @@ static void qmi_handle_message(struct qmi_handle *qmi,
 		} else {
 			qmi_invoke_handler(qmi, sq, txn, buf, len);
 		}
-		mutex_unlock(&txn->lock);
 		mutex_unlock(&qmi->txn_lock);
 	} else {
 		/* Create a txn based on the txn_id of the incoming message */
