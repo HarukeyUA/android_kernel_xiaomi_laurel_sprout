@@ -244,6 +244,10 @@ wcd_spi_dlkm-y := $(SPI_OBJS)
 obj-$(CONFIG_SND_SOC_WCD_MBHC) += mbhc_dlkm.o
 mbhc_dlkm-y := $(MBHC_OBJS)
 
+# Module information used by KBuild framework
+obj-$(CONFIG_SND_SOC_MAX98937) += max98937_dlkm.o
+max98937_dlkm-y := $(MAX98937_OBJS)
+
 obj-$(CONFIG_SND_SOC_MSM_HDMI_CODEC_RX) += hdmi_dlkm.o
 hdmi_dlkm-y := $(HDMICODEC_OBJS)
 
