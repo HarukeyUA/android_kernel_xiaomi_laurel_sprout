@@ -406,8 +406,8 @@ int fts_fod_readdata(struct fts_ts_data *ts_data, u8 *data)
 		FTS_ERROR("read fod header data fail");
 		return ret;
 	}
-	FTS_DEBUG("gesture_fod: buf[0-8] = %d, %d, %d, %d, %d, %d, %d, %d, %d",
-			buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7], buf[8]);
+	//FTS_DEBUG("gesture_fod: buf[0-8] = %d, %d, %d, %d, %d, %d, %d, %d, %d",
+	//		buf[0], buf[1], buf[2], buf[3], buf[4], buf[5], buf[6], buf[7], buf[8]);
 
 	gesture_fod->ucFodPointID = buf[0];
 	gesture_fod->ucFodID = buf[1];
