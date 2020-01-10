@@ -2366,6 +2366,26 @@ static int qpnp_pon_parse_dt_power_off_config(struct qpnp_pon *pon)
 
 	return 0;
 }
+/*add board id for f9s begin*/
+extern char board_id[HARDWARE_MAX_ITEM_LONGTH];
+void probe_board_and_set(void)
+{
+	char* boadrid_start;
+  char boardid_info[HARDWARE_MAX_ITEM_LONGTH];
+
+	boadrid_start = strstr(saved_command_line,"board_id=");
+	memset(boardid_info, 0, HARDWARE_MAX_ITEM_LONGTH);
+	if(boadrid_start != NULL)
+	{
+        strncpy(boardid_info, boadrid_start+sizeof("board_id=")-1, 9);//skip the header "board_id="
+	}
+	else
+	{
+		sprintf(boardid_info, "boarid not define!");
+	}
+	strlcpy(board_id, boardid_info, HARDWARE_MAX_ITEM_LONGTH);
+}
+/*add board id for f9s end*/
 
 static int qpnp_pon_probe(struct platform_device *pdev)
 {
@@ -2482,10 +2502,18 @@ static int qpnp_pon_probe(struct platform_device *pdev)
 		return rc;
 	}
 
+	rc = device_create_file(dev, &dev_attr_kpdpwr_reset);
+	if (rc) {
+		dev_err(dev, "sysfs kpdpwr_reset file creation failed rc=%d\n",
+			rc);
+		return rc;
+	}
+
 	if (sys_reset)
 		sys_reset_dev = pon;
 
 	qpnp_pon_debugfs_init(pon);
+	probe_board_and_set();//add board id for f9s
 
 	return 0;
 }
