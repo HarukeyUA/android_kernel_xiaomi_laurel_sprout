@@ -109,3 +109,6 @@ obj-$(CONFIG_TOUCHSCREEN_ST)		+= st/
 obj-$(CONFIG_TOUCHSCREEN_HIMAX_CHIPSET)	+= hxchipset/
 obj-$(CONFIG_TOUCHSCREEN_SYNAPTICS_TCM)	+= synaptics_tcm/
 obj-$(CONFIG_TOUCHSCREEN_RAYDIUM_CHIPSET)  += raydium_wt030/
+obj-$(CONFIG_TOUCHSCREEN_XIAOMI_F9S)	+= goodix_gtx8/
+obj-$(CONFIG_TOUCHSCREEN_XIAOMI_F9S)	+= focaltech_touch/
+obj-$(CONFIG_TOUCHSCREEN_XIAOMI_F9S)	+= touch-info.o

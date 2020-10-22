@@ -1,0 +1,11 @@
+#
+# Focaltech Touchscreen driver configuration
+#
+
+config TOUCHSCREEN_FTS_F9S
+	bool "Focaltech Touchscreen"
+	depends on ( SPI || TOUCHSCREEN_XIAOMI_F9S )
+	default n
+	help
+		Say Y here if you have Focaltech touch panel.
+		If unsure, say N.
