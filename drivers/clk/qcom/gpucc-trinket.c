@@ -479,6 +479,7 @@ static struct platform_driver gpu_cc_trinket_driver = {
 	.driver = {
 		.name = "gpu_cc-trinket",
 		.of_match_table = gpu_cc_trinket_match_table,
+		.probe_type = PROBE_FORCE_SYNCHRONOUS,
 	},
 };
 
