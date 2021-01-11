@@ -368,6 +368,7 @@ static struct platform_driver video_cc_trinket_driver = {
 	.driver = {
 		.name = "video_cc-trinket",
 		.of_match_table = video_cc_trinket_match_table,
+		.probe_type = PROBE_FORCE_SYNCHRONOUS,
 	},
 };
 
