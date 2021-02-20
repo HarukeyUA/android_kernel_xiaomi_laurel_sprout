@@ -450,7 +450,7 @@ int fts_fod_readdata(struct fts_ts_data *ts_data, u8 *data)
 			}
 			ts_data->finger_in_fod = true;
 			if (!ts_data->suspended) {
-				pr_info("FTS:touch is not in suspend state or finger report is not enabled, report x,y value by touch nomal report\n");
+				pr_debug("FTS:touch is not in suspend state or finger report is not enabled, report x,y value by touch nomal report\n");
 				mutex_unlock(&ts_data->report_mutex);
 				return -EINVAL;
 			}
@@ -480,7 +480,7 @@ int fts_fod_readdata(struct fts_ts_data *ts_data, u8 *data)
 			ts_data->point_id_changed = false;
 			FTS_INFO("set fod finger skip false, set old_point_id as default value\n");
 			if (!ts_data->suspended ) {
-				pr_info("FTS_UP:touch is not in suspend state or finger report is not enabled, report x,y value by touch nomal report\n");
+				pr_debug("FTS_UP:touch is not in suspend state or finger report is not enabled, report x,y value by touch nomal report\n");
 				return -EINVAL;
 			}
 			mutex_lock(&ts_data->report_mutex);
